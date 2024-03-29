@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { firestore, storage, timestamp } from './firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, addDoc, collection, getDocs } from "firebase/firestore";
-
-import Form from './components/Form';
+import { useState, useEffect } from "react";
+import { firestore } from "./firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 function App() {
-
-  const [formData, setFormData] = useState([])
+  const [formData, setFormData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await getDocs(collection(firestore, 'formData'));
+        const querySnapshot = await getDocs(collection(firestore, "formData"));
         const formDataArray = [];
 
         querySnapshot.forEach((doc) => {
@@ -32,7 +28,7 @@ function App() {
 
         setFormData(formDataArray);
       } catch (error) {
-        console.error('Error fetching documents: ', error);
+        console.error("Error fetching documents: ", error);
       }
     };
 
@@ -54,7 +50,7 @@ function App() {
               <p>City: {formDataItem.city}</p>
               <p>State: {formDataItem.state}</p>
               <p>Pincode: {formDataItem.pincode}</p>
-              <p>Image URLs: {formDataItem.imageUrls.join(', ')}</p>
+              <p>Image URLs: {formDataItem.imageUrls.join(", ")}</p>
             </li>
           ))}
         </ul>

@@ -1,7 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore, serverTimestamp } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
-
+import { initializeApp } from "firebase/app";
+import { getFirestore, serverTimestamp } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app);
