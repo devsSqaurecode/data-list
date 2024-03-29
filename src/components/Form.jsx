@@ -3,9 +3,12 @@ import { firestore, storage } from "../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
+import { statesOfIndia } from "../constants";
+
 function Form() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [email, setEmail] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -13,6 +16,10 @@ function Form() {
   const [pincode, setPincode] = useState("");
   const [selectedImages, setSelectedImages] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
+
+  const handleStateChange = (e) => {
+    setState(e.target.value);
+  };
 
   const handleImageChange = (e) => {
     setSelectedImages(Array.from(e.target.files)); // Convert FileList to array
@@ -36,6 +43,7 @@ function Form() {
       const docRef = await addDoc(collection(firestore, "formData"), {
         name,
         description,
+        email,
         contactNumber,
         address,
         city,
@@ -50,6 +58,7 @@ function Form() {
       setDescription("");
       setContactNumber("");
       setAddress("");
+      setEmail("");
       setCity("");
       setState("");
       setPincode("");
@@ -61,81 +70,169 @@ function Form() {
   };
 
   return (
-    <div className="App p-4">
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <div>
-          <label className="block mb-1">Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Description:</label>
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Contact Number:</label>
-          <input
-            type="tel"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Address:</label>
-          <textarea
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          ></textarea>
-        </div>
-        <div>
-          <label className="block mb-1">City:</label>
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Pincode:</label>
-          <input
-            type="number"
-            value={pincode}
-            onChange={(e) => setPincode(e.target.value)}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div>
-          <label>Upload Images:</label>
-          <input type="file" multiple onChange={handleImageChange} />
-        </div>
-        {imageUrls.map((url, index) => (
-          <img
-            key={index}
-            src={url}
-            alt={`Uploaded ${index}`}
-            style={{ width: "100px", height: "auto" }}
-          />
-        ))}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+    <form className="max-w-sm mx-auto mt-5 mb-5" onSubmit={handleSubmit}>
+      <div className="mb-5">
+        <label
+          htmlFor="storename"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          Submit
-        </button>
-      </form>
-    </div>
+          Store name:
+        </label>
+        <input
+          type="text"
+          value={name}
+          id="storename"
+          onChange={(e) => setName(e.target.value)}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Store name"
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="email"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Email
+        </label>
+        <input
+          type="email"
+          value={email}
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="devssquarecode@gmail.com"
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="description"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Description:
+        </label>
+        <input
+          type="text"
+          value={description}
+          id="description"
+          placeholder="Store description"
+          onChange={(e) => setDescription(e.target.value)}
+          className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="contactnumber"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Contact Number:
+        </label>
+        <input
+          id="contactnumber"
+          type="tel"
+          value={contactNumber}
+          placeholder="Contact Number"
+          onChange={(e) => setContactNumber(e.target.value)}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="address"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Address:
+        </label>
+        <textarea
+          id="address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Store address"
+          className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        ></textarea>
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="city"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          City:
+        </label>
+        <input
+          id="city"
+          type="text"
+          value={city}
+          placeholder="City"
+          onChange={(e) => setCity(e.target.value)}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="state"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          State:
+        </label>
+        <select
+          id="state"
+          value={state}
+          onChange={handleStateChange}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="">Select State</option>
+          {statesOfIndia.map((stateName, index) => (
+            <option key={index} value={stateName}>
+              {stateName}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="pincode"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Pincode:
+        </label>
+        <input
+          id="pincode"
+          type="number"
+          value={pincode}
+          onChange={(e) => setPincode(e.target.value)}
+          placeholder="Pincode"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="uploadimages"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Upload Images:
+        </label>
+        <input
+          id="uploadimages"
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          type="file"
+          multiple
+          onChange={handleImageChange}
+        />
+      </div>
+      {imageUrls.map((url, index) => (
+        <img
+          key={index}
+          src={url}
+          alt={`Uploaded ${index}`}
+          style={{ width: "100px", height: "auto" }}
+        />
+      ))}
+      <button
+        type="submit"
+        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Submit
+      </button>
+    </form>
   );
 }
 

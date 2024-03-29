@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="App p-4">
-      <h1 className="text-3xl font-bold mb-4">React Form with Images Upload</h1>
+      <h1 className="text-2xl font-bold mb-4">React Form with Images Upload</h1>
       <div>
         <h1>Form Data</h1>
         <ul>
