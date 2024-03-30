@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { firestore, storage } from "../firebase";
+import { useNavigate } from "react-router-dom";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { addDoc, collection } from "firebase/firestore";
 
-import { statesOfIndia } from "../constants";
+import { statesOfIndia, categories } from "../constants";
 
 function Form() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [email, setEmail] = useState("");
+  const [category, setCategory] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -17,8 +19,14 @@ function Form() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
 
+  const navigate = useNavigate();
+
   const handleStateChange = (e) => {
     setState(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
   };
 
   const handleImageChange = (e) => {
@@ -44,6 +52,7 @@ function Form() {
         name,
         description,
         email,
+        category,
         contactNumber,
         address,
         city,
@@ -56,6 +65,7 @@ function Form() {
       // Clear form fields and image state after submission
       setName("");
       setDescription("");
+      setCategory("");
       setContactNumber("");
       setAddress("");
       setEmail("");
@@ -64,6 +74,7 @@ function Form() {
       setPincode("");
       setSelectedImages([]);
       setImageUrls([]);
+      navigate("/");
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -118,6 +129,27 @@ function Form() {
           onChange={(e) => setDescription(e.target.value)}
           className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         />
+      </div>
+      <div className="mb-5">
+        <label
+          htmlFor="category"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Category:
+        </label>
+        <select
+          id="state"
+          value={category}
+          onChange={handleCategoryChange}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="">Select Category</option>
+          {categories.map((category, index) => (
+            <option key={index} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="mb-5">
         <label

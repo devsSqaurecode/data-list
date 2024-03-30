@@ -5,6 +5,7 @@ import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Form from "./components/Form.jsx";
+import Store from "./components/Store.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/form",
     element: <Form />,
+  },
+  {
+    path: "/store/:category",
+    element: <Store />,
   },
 ]);
 

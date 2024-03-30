@@ -1,62 +1,53 @@
-import { useState, useEffect } from "react";
-import { firestore } from "./firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { Link } from "react-router-dom"; // Import Link component
+import { categories } from "./constants";
+import { useNavigate } from "react-router-dom";
 
-function App() {
-  const [formData, setFormData] = useState([]);
+const App = () => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(firestore, "formData"));
-        const formDataArray = [];
+  const categoryPhotos = {
+    Textiles: "/images/textile.jpeg",
+    Groceries: "/images/groceries.jpeg",
+    Furniture: "/images/furniture.jpeg",
+    Electronics: "/images/electronics.jpeg",
+    Kitchen: "/images/kitchen.jpeg",
+  };
 
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          formDataArray.push({
-            id: doc.id,
-            name: data.name,
-            description: data.description,
-            contactNumber: data.contactNumber,
-            address: data.address,
-            city: data.city,
-            state: data.state,
-            pincode: data.pincode,
-            imageUrls: data.imageUrls,
-          });
-        });
-
-        setFormData(formDataArray);
-      } catch (error) {
-        console.error("Error fetching documents: ", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const handleFormButtonClick = () => {
+    navigate("/form");
+  };
 
   return (
-    <div className="App p-4">
-      <h1 className="text-2xl font-bold mb-4">React Form with Images Upload</h1>
-      <div>
-        <h1>Form Data</h1>
-        <ul>
-          {formData.map((formDataItem) => (
-            <li key={formDataItem.id}>
-              <p>Name: {formDataItem.name}</p>
-              <p>Description: {formDataItem.description}</p>
-              <p>Contact Number: {formDataItem.contactNumber}</p>
-              <p>Address: {formDataItem.address}</p>
-              <p>City: {formDataItem.city}</p>
-              <p>State: {formDataItem.state}</p>
-              <p>Pincode: {formDataItem.pincode}</p>
-              <p>Image URLs: {formDataItem.imageUrls.join(", ")}</p>
-            </li>
-          ))}
-        </ul>
+    <div className="flex flex-col justify-center items-center h-screen">
+      <div className="flex space-x-4 mb-4">
+        {categories.map((category, index) => (
+          <div
+            key={index}
+            className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+          >
+            <Link to={`/store/${category}`}>
+              <img
+                className="rounded-t-lg"
+                src={categoryPhotos[category]}
+                alt=""
+              />
+              <div className="p-5">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {category}
+                </h5>
+              </div>
+            </Link>
+          </div>
+        ))}
       </div>
+      <button
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        onClick={handleFormButtonClick}
+      >
+        Go to Form
+      </button>
     </div>
   );
-}
+};
 
 export default App;

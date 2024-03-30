@@ -34,3 +34,11 @@ export const statesOfIndia = [
   "Lakshadweep",
   "Puducherry",
 ];
+
+export const categories = [
+  "Textiles",
+  "Groceries",
+  "Furniture",
+  "Electronics",
+  "Kitchen",
+];
