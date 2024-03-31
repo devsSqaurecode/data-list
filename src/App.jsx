@@ -18,8 +18,9 @@ const App = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <div className="flex space-x-4 mb-4">
+    <div className="flex flex-col gap-8 justify-center items-center p-4 w-screen h-screen m-auto">
+      <p>&lt;&lt; Scroll Horizontally &gt;&gt;</p>
+      <div className="card-container flex gap-4 w-full overflow-x-auto">
         {categories.map((category, index) => (
           <div
             key={index}
@@ -27,12 +28,12 @@ const App = () => {
           >
             <Link to={`/store/${category}`}>
               <img
-                className="rounded-t-lg"
+                className="rounded-t-lg max-h-1/2 h-1/2 w-full object-cover"
                 src={categoryPhotos[category]}
                 alt=""
               />
-              <div className="p-5">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <div className="p-4 w-60">
+                <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
                   {category}
                 </h5>
               </div>
