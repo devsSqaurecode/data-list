@@ -3,6 +3,8 @@ import { firestore } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useParams } from "react-router-dom";
 import ItemCard from "./ItemCard";
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Store() {
   const { category } = useParams();
@@ -91,49 +93,55 @@ function Store() {
   };
 
   return (
-    <div className="App p-4 w-full md:max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-8 text-center">{category}</h1>
-      <div className="bg-gray-50 p-4 pt-8 pb-4 border shadow mb-8">
-        <div className="flex gap-2 mb-4" onChange={handleInputChange}>
-          <input
-            type="text"
-            id="city"
-            value={searchCity}
-            placeholder="City"
-            className="w-2/3  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 bg-white"
-          />
-          <input
-            type="text"
-            id="search"
-            value={searchTerm}
-            placeholder="Type to search"
-            className="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+    <>
+      <Header />
+      <div className="bg-white p-4 w-full md:max-w-3xl mx-auto">
+        <h1 className="text-2xl font-bold my-8 uppercase text-center">
+          {category}
+        </h1>
+        <div className="bg-gray-100 p-4 pt-8 pb-4 border shadow mb-8">
+          <div className="flex gap-2 mb-4" onChange={handleInputChange}>
+            <input
+              type="text"
+              id="city"
+              value={searchCity}
+              placeholder="City"
+              className="w-2/3"
+            />
+            <input
+              type="text"
+              id="search"
+              value={searchTerm}
+              placeholder="Type to search"
+              className=""
+            />
+          </div>
+          <div className="flex gap-2 justify-end items-center">
+            {emptyTermError && (
+              <p className="text-red-500">Enter at least one search term.</p>
+            )}
+            <button
+              className="body-text-bold button-main"
+              onClick={filterItems}
+            >
+              Search
+            </button>
+            <button
+              className="body-text-bold px-4 py-2 hover:bg-gray-200"
+              onClick={resetFilterItems}
+            >
+              Reset
+            </button>
+          </div>
         </div>
-        <div className="flex gap-2 justify-end items-center">
-          {emptyTermError && (
-            <p className="text-red-500">Enter at least one search term.</p>
-          )}
-          <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            onClick={filterItems}
-          >
-            Search
-          </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={resetFilterItems}
-          >
-            Reset
-          </button>
+        <div className="flex flex-col gap-4 items-center">
+          {filteredData.map((formDataItem) => (
+            <ItemCard formDataItem={formDataItem} key={formDataItem.id} />
+          ))}
         </div>
       </div>
-      <div className="flex flex-col gap-4 items-center">
-        {filteredData.map((formDataItem) => (
-          <ItemCard formDataItem={formDataItem} key={formDataItem.id} />
-        ))}
-      </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 
