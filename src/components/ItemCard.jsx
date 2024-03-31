@@ -1,8 +1,20 @@
 import { memo } from "react";
 import { Slide } from "react-slideshow-image";
+import { firestore } from "../firebase";
+import { deleteDoc, doc, collection } from "firebase/firestore";
 import "react-slideshow-image/dist/styles.css";
 
-const ItemCard = ({ formDataItem }) => {
+const ItemCard = ({ formDataItem, onDelete }) => {
+  const handleDelete = async () => {
+    try {
+      await deleteDoc(doc(collection(firestore, "formData"), formDataItem.id));
+      onDelete(formDataItem.id);
+      console.log("Document deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting document: ", error);
+    }
+  };
+
   return (
     <div className="md:max-w-3xl w-full shadow-md bg-white">
       <div className="bg-gray-200 w-full aspect-video">
@@ -39,6 +51,12 @@ const ItemCard = ({ formDataItem }) => {
         <p>
           <span>Pincode:</span> {formDataItem.pincode}
         </p>
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 hover:bg-red-600 text-white font-bold mt-5 py-2 px-4 rounded"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

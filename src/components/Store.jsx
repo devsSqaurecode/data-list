@@ -85,6 +85,20 @@ function Store() {
     if (trimmedCityTerm || trimmedSearchTerm) setFilteredData(newFilteredData);
   };
 
+  const handleDelete = (deletedItemId) => {
+    // Filter out the deleted item from the formData state
+    const updatedFormData = formData.filter(
+      (item) => item.id !== deletedItemId,
+    );
+    setFormData(updatedFormData);
+
+    // Also update the filteredData state if necessary
+    const updatedFilteredData = filteredData.filter(
+      (item) => item.id !== deletedItemId,
+    );
+    setFilteredData(updatedFilteredData);
+  };
+
   const resetFilterItems = () => {
     setEmptyTermError(false);
     setSearchCity("");
@@ -136,7 +150,11 @@ function Store() {
         </div>
         <div className="flex flex-col gap-4 items-center">
           {filteredData.map((formDataItem) => (
-            <ItemCard formDataItem={formDataItem} key={formDataItem.id} />
+            <ItemCard
+              formDataItem={formDataItem}
+              key={formDataItem.id}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       </div>
